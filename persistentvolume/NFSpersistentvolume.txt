@@ -1,0 +1,36 @@
+master:- 
+
+$ kubectl version --short
+$ sudo mkdir /srv/nfs/kubedata -p
+$ sudo chown nobody:/srv/nfs/kubedata
+$ sudo systemctl enable nfs-server
+$ sudo vi /etc/exports   --
+  then add one line on this server
+   /srv/nfs/kubedata *(rw,sync,no_subtree_check,no_root_squash,no_all_squash,insecure)
+   
+$ sudo exportfs -rav 
+$ sudo exportfs -v
+
+then check nfs ip by ($ ip a s)
+
+worker 
+$ mount -t nfs ip:/srv/nfs/kubedata /mnt   # mount nfs to mnt in worker
+$ mount | grep kubedata # check is kubedata mount with mnt folder
+$ after check unmount mnt ($ unmount mnt)
+
+$ ls # in /yaml/nfs-provisioner   (there are three file)
+rbac.yaml,deployment.yaml,class.yaml
+1.  $ kubectl get clusterrole,clusterrolebinding,role,rolebinding | grep nfs
+2. $ kubectl create -f rbac.yaml 
+3.  $ kubectl get clusterrole,clusterrolebinding,role,rolebinding | grep nfs
+4. $ kubectl get storageclass
+5. $ kubectl create -f class.yaml
+6. go to deployment.yaml file and add ip  of nfs on <<NFS server IP>> server inside env tag 
+7. $ kubectl get all
+8. $ kubectl create -f deployment.yaml
+9 it will not create provision volume direct we can call from claim
+10. create a persistentvolumeclaim (4. $ kubectl get storageclass)
+ after get storageClassName put into persistentvolumeclaim
+11. $ kubectl create -f 4-pvc-nfs.yaml # see inside yaml file change storage class like above
+12. then check $ kubectl get pv,pvc 
+
