@@ -1,0 +1,23 @@
+
+helm help
+helm install (--values) (--name)
+help fetch
+helm list
+helm status
+helm search
+helm repo update
+helm upgrade
+helm rollback
+helm delete (--purge)
+helm reset (--force) (--remove-helm-home)
+
+helm home
+
+helm version --short
+
+check tiller
+ kubectl -n kube-system get pods
+ kubectl -n kube-system get deploy,replicaset,pod,serviceaccount,clusterrolebinding | grep tiller
+   
+   
+
