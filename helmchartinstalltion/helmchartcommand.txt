@@ -11,13 +11,21 @@ helm rollback
 helm delete (--purge)
 helm reset (--force) (--remove-helm-home)
 
+Example:- 
+helm inspect values stalbe/jenkin >/tmp/jenkins.values
+helm install stable/minio 
+
+
 helm home
 
 helm version --short
+
+helm install --name my-release -f values.yaml stable/minio
 
 check tiller
  kubectl -n kube-system get pods
  kubectl -n kube-system get deploy,replicaset,pod,serviceaccount,clusterrolebinding | grep tiller
    
+   kubectl describe nodes | grep -i taint
    
 
