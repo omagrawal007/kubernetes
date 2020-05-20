@@ -55,3 +55,4 @@ $ kubectl -n finance get role john-finance -o yaml
 $ kubectl create rolebinding john-finance-rolebinding --role=john-finance --user=john --namespcaes finance
 $ kubectl -n finance get rolebinding john-finance-rolebinding -o yaml
 
+

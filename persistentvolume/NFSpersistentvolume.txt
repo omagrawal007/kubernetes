@@ -1,5 +1,42 @@
 master:- 
 
+NFS server
+
+  $ sudo apt update
+  $ sudo apt install nfs-kernel-server
+  $ sudo mkdir -p /mnt/nfs_share
+  $ sudo chown -R nobody:nogroup /mnt/nfs_share/
+  $ sudo chmod 777 /mnt/nfs_share/
+  $ sudo vim /etc/exports 
+  $ sudo vi /etc/exports   --
+  then add one line on this server
+   /srv/nfs/kubedata *(rw,sync,no_subtree_check,no_root_squash,no_all_squash,insecure)
+
+  $ sudo exportfs -a
+  $ sudo systemctl restart nfs-kernel-server 
+
+NFS client
+sudo apt-get install nfs-common
+
+
+mount -t nfs 192.168.1.5:/home/shared /mnt/common
+
+# umount /mnt/test
+umount: /mnt/test: device is busy.
+        (In some cases useful info about processes that use
+         the device is found by lsof(8) or fuser(1))
+# lsof /mnt/test/
+COMMAND   PID  USER   FD   TYPE DEVICE SIZE/OFF  NODE NAME
+bash    10934 tange  cwd    DIR    7,0     4096 65537 /mnt/test/testdir
+cat     14286 tange    1w   REG    7,0        0 65538 /mnt/test/testdir/a
+cat     14291 tange    1w   REG    7,0        2 65539 /mnt/test/testdir/b (deleted)
+# kill -9 10934 14286 14291
+# lsof /mnt/test/
+# umount /mnt/test
+
+
+
+----------------------------------------------------------------Part of kubernetes   ------------------------------------------------------
 $ kubectl version --short
 $ sudo mkdir /srv/nfs/kubedata -p
 $ sudo chown nobody:/srv/nfs/kubedata
@@ -14,7 +51,7 @@ $ sudo exportfs -v
 then check nfs ip by ($ ip a s)
 
 worker 
-$ mount -t nfs ip:/srv/nfs/kubedata /mnt   # mount nfs to mnt in worker
+$ mount -t nfs ip:/srv/nfs/kubedata /mnt   # mount nfs to mnt in worker   mount -t nfs 192.168.1.5:/home/shared /mnt/common
 $ mount | grep kubedata # check is kubedata mount with mnt folder
 $ after check unmount mnt ($ unmount mnt)
 

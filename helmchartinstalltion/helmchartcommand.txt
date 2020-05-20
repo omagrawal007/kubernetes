@@ -13,14 +13,15 @@ helm reset (--force) (--remove-helm-home)
 
 Example:- 
 helm inspect values stalbe/jenkin >/tmp/jenkins.values
-helm install stable/minio 
+helm install --name my-release -f values.yaml stable/minio
+
 
 
 helm home
 
 helm version --short
 
-helm install --name my-release -f values.yaml stable/minio
+
 
 check tiller
  kubectl -n kube-system get pods
