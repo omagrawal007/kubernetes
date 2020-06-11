@@ -10,7 +10,7 @@ NFS server
   $ sudo vim /etc/exports 
   $ sudo vi /etc/exports   --
   then add one line on this server
-   /srv/nfs/kubedata *(rw,sync,no_subtree_check,no_root_squash,no_all_squash,insecure)
+   /mnt/nfs_share *(rw,sync,no_subtree_check,no_root_squash,no_all_squash,insecure)
 
   $ sudo exportfs -a
   $ sudo systemctl restart nfs-kernel-server 
@@ -19,20 +19,20 @@ NFS client
 sudo apt-get install nfs-common
 
 
-mount -t nfs 192.168.1.5:/home/shared /mnt/common
+ mount -t nfs 15.97.199.24:/mnt/nfs_share /mnt/common
 
-# umount /mnt/test
-umount: /mnt/test: device is busy.
+#  umount /mnt/common
+umount: /mnt/common: device is busy.
         (In some cases useful info about processes that use
          the device is found by lsof(8) or fuser(1))
-# lsof /mnt/test/
+# lsof /mnt/common
 COMMAND   PID  USER   FD   TYPE DEVICE SIZE/OFF  NODE NAME
-bash    10934 tange  cwd    DIR    7,0     4096 65537 /mnt/test/testdir
-cat     14286 tange    1w   REG    7,0        0 65538 /mnt/test/testdir/a
-cat     14291 tange    1w   REG    7,0        2 65539 /mnt/test/testdir/b (deleted)
+bash    10934 tange  cwd    DIR    7,0     4096 65537 /mnt/common/testdir
+cat     14286 tange    1w   REG    7,0        0 65538 /mnt/common/testdir/a
+cat     14291 tange    1w   REG    7,0        2 65539 /mnt/common/testdir/b (deleted)
 # kill -9 10934 14286 14291
-# lsof /mnt/test/
-# umount /mnt/test
+# lsof /mnt/common
+# umount /mnt/common
 
 
 

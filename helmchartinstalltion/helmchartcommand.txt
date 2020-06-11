@@ -14,7 +14,7 @@ helm reset (--force) (--remove-helm-home)
 Example:- 
 helm inspect values stalbe/jenkin >/tmp/jenkins.values
 helm install --name my-release -f values.yaml stable/minio
-
+ helm del --purge airflow
 --namespace foo-bar
 
 
