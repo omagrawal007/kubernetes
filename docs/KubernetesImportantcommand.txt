@@ -1,0 +1,104 @@
+$ kubectl get pods(resouce name) example:- kubectl get pods -o wide (-o wide means show pods information widly)
+$ kubectl get services
+$ kubectl explain pods | less (if we don't know about resouce)
+$ kubectl describe pods| less (generic pods information)
+$ kubectl describe pods pods_name (information about my pods like (label name and lot of information))
+$ kubectl describe pods 
+$ kubectl run secondpod  --generator=run-pod/v1 --image=nginix_imagename (create pod using command)
+$ kubectl run secondpod  --dry-run --generator=run-pod/v1 --image=nginix_imagename (check command is correct or not and reflect on client side not server side)
+$ kubectl create -f yamlfile (create all new resouces using yaml file . while write yaml file take help command describe)
+$ kubectl apply -f yamlfile (create all new resouces using yaml file) --server-dry-run (availabe in apply only not in create and run) 
+$ kubectl diff -f yamlfile (what changes will happen in server side )
+$ kubctl explain pod --recursive|less (how to create yaml file see important field )
+$ kubctl run secondPod --dry-run --generator=run-pod/v1 --image=nginix_imagename -o yaml >> createsecondpod.yml(show dummy yaml file to create secondpod pod. example of create yaml file and keep in one yaml file)
+$ kubctl delete pods pod_name (delete pods )
+$ kubctl exec myfirstpod command (it works only if one container is running)
+$ kubctl exec myfirstpod -c container_name command (it works for container specipic) example:- kubctl exec myfirstpod -c container_name -it bash
+$ kubectl get pods -o wide --all-namespaces
+$ kubectl get all
+
+$ kubectl get pods -n kube-system
+
+delete pods forcefully
+
+$ kubectl delete pods <pod> --grace-period=0 --force 
+
+PVC(PersistentVolumeClaim) & PV(PersistentVolume) in sequence.
+
+Some thing like below(in sequence):
+
+kubectl delete pod --all / pod-name
+kubectl delete pvc --all / pvc-name
+kubectl delete pv --all / pv-name
+
+
+dashboard running command
+
+$kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
+$ kubectl proxy --address 172.31.27.210 --port=8001 --accept-hosts='^*$'   #dashboard access from outside
+$ kubectl -n kube-system get secret
+$ kubectl -n kube-system describe secret name_of_secret
+
+http://127.0.0.1:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy
+
+
+kubernate service:-
+there are many services 
+ 1. cluster ip
+    example:- 
+	$ kubectl expose pod myfirstpod --port=8000 --target-port=80 --name myfirstservice (if any body is hitting 8000 port from out side so it will hit 80 inside)
+	$ kubectl get service (get service with cluster IP and if we are hiting with in same network to that ip it will redirect to pod container)  
+ 2. node (connect from out side network)
+    $ kubectl expose pod myfirstpod --port=8000 --type=NodePort --target-port=80 --name myfirstservice (if any body is hitting 8000 port from out side so it will hit 80 inside) 
+
+Notes:-
+  1. inside pods use share network. which port are open in one container same port will open in other container
+  2. assign same ip in container in one pods
+  3. we can not open same port for diffrent service in container on same pod
+  
+  
+  
+  https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+
+
+  --------------------------------------------------------------------
+  debug pods from one to another 
+
+
+  Cheatsheet: Kubernetes commands
+kubectl get pod: Get information about all running pods
+
+kubectl describe pod <pod>: Describe one pod
+
+kubectl expose pod <pod> --port=444 --name=frontend: Expose the port of a pod (creates a new service)
+
+kubectl port-forward <pod> 8080: Port forward the exposed pod port to your local machine
+
+kubectl attach <podname> -i: Attach to the pod
+
+kubectl exec <pod> -- command: Execute a command on the pod
+
+kubectl label pods <pod> mylabel=awesome: Add a new label to a pod
+
+kubectl run -i --tty busybox --image=busybox --restart=Never -- sh: Run a shell in a pod - very useful for debugging
+
+kubectl get deployments: Get information on current deployments
+
+kubectl get rs: Get information about the replica sets
+
+kubectl get pods --show-labels: get pods, and also show labels attached to those pods
+
+kubectl rollout status deployment/helloworld-deployment: Get deployment status
+
+kubectl set image deployment/helloworld-deployment k8s-demo=k8s-demo:2: Run k8s-demo with the image label version 2
+
+kubectl edit deployment/helloworld-deployment: Edit the deployment object
+
+kubectl rollout status deployment/helloworld-deployment: Get the status of the rollout
+
+kubectl rollout history deployment/helloworld-deployment: Get the rollout history
+
+kubectl rollout undo deployment/helloworld-deployment: Rollback to previous version
+
+kubectl rollout undo deployment/helloworld-deployment --to-revision=n: Rollback to any version version
