@@ -81,7 +81,12 @@ kubectl exec <pod> -- command: Execute a command on the pod
 
 kubectl label pods <pod> mylabel=awesome: Add a new label to a pod
 
-kubectl run -i --tty busybox --image=busybox --restart=Never -- sh: Run a shell in a pod - very useful for debugging
+
+kubectl run -i --tty busybox --image=busybox --restart=Never -- sh   : Run a shell in a pod - very useful for debugging
+example:- 
+
+
+
 
 kubectl get deployments: Get information on current deployments
 
